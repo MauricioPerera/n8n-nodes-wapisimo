@@ -1,4 +1,4 @@
-import { INodeProperties } from 'n8n-workflow';
+import { INodeProperties, INodeTypeDescription, NodeConnectionType } from 'n8n-workflow';
 
 export const wapiSimoOperations: INodeProperties[] = [
     {
@@ -15,13 +15,17 @@ export const wapiSimoOperations: INodeProperties[] = [
             {
                 name: 'Send Message',
                 value: 'sendMessage',
-                description: 'Send a WhatsApp message to a specific number',
-                routing: {
-                    request: {
-                        method: 'POST',
-                        url: '={{ "/" + $credentials.phoneOrGroupId + "/send"}}',
-                    },
-                },
+                action: 'Send message',
+            },
+            {
+                name: 'Verify Number',
+                value: 'verifyNumber',
+                action: 'Verify number',
+            },
+            {
+                name: 'Get QR Code',
+                value: 'getQRCode',
+                action: 'Get QR code',
             },
         ],
         default: 'sendMessage',
@@ -47,10 +51,11 @@ export const wapiSimoOperations: INodeProperties[] = [
                         url: '/verify',
                     },
                 },
+                action: 'Verify number',
             },
             {
                 name: 'Get QR Code',
-                value: 'getQrCode',
+                value: 'getQRCode',
                 description: 'Retrieve the QR code for WhatsApp Web authentication',
                 routing: {
                     request: {
@@ -58,6 +63,7 @@ export const wapiSimoOperations: INodeProperties[] = [
                         url: '={{ "/" + $credentials.phoneOrGroupId + "/qr"}}',
                     },
                 },
+                action: 'Get QR code',
             },
         ],
         default: 'verifyNumber',
@@ -76,35 +82,17 @@ export const wapiSimoOperations: INodeProperties[] = [
             {
                 name: 'List Webhooks',
                 value: 'listWebhooks',
-                description: 'Get all webhooks configured for a phone',
-                routing: {
-                    request: {
-                        method: 'GET',
-                        url: '={{ "/" + $credentials.phoneOrGroupId + "/webhook"}}',
-                    },
-                },
+                action: 'List webhooks',
             },
             {
                 name: 'Add Webhook',
                 value: 'addWebhook',
-                description: 'Configure a new webhook for receiving message notifications',
-                routing: {
-                    request: {
-                        method: 'POST',
-                        url: '={{ "/" + $credentials.phoneOrGroupId + "/webhook"}}',
-                    },
-                },
+                action: 'Add webhook',
             },
             {
                 name: 'Delete Webhook',
                 value: 'deleteWebhook',
-                description: 'Remove a configured webhook',
-                routing: {
-                    request: {
-                        method: 'DELETE',
-                        url: '={{ "/" + $credentials.phoneOrGroupId + "/webhook/" + $parameter["webhookId"]}}',
-                    },
-                },
+                action: 'Delete webhook',
             },
         ],
         default: 'listWebhooks',
@@ -207,3 +195,96 @@ export const wapiSimoFields: INodeProperties[] = [
         description: 'The ID of the webhook to delete',
     },
 ];
+
+export const description: INodeTypeDescription = {
+    displayName: 'Wapisimo',
+    name: 'wapisimo',
+    icon: 'file:wapisimo.svg',
+    group: ['transform'],
+    version: 1,
+    subtitle: '={{$parameter["operation"]}}',
+    description: 'Interact with Wapisimo API',
+    defaults: {
+        name: 'Wapisimo',
+    },
+    inputs: [{
+        type: NodeConnectionType.Main,
+    }],
+    outputs: [{
+        type: NodeConnectionType.Main,
+    }],
+    credentials: [
+        {
+            name: 'wapiSimoApi',
+            required: true,
+        },
+    ],
+    properties: [
+        {
+            displayName: 'Operation',
+            name: 'operation',
+            type: 'options',
+            noDataExpression: true,
+            options: [
+                {
+                    name: 'Send Message',
+                    value: 'sendMessage',
+                    action: 'Send a message',
+                },
+                {
+                    name: 'Verify Number',
+                    value: 'verifyNumber',
+                    action: 'Verify a phone number',
+                },
+                {
+                    name: 'Get QR Code',
+                    value: 'getQRCode',
+                    action: 'Get QR code',
+                },
+            ],
+            default: 'sendMessage',
+        },
+        {
+            displayName: 'To',
+            name: 'to',
+            type: 'string',
+            default: '',
+            required: true,
+            displayOptions: {
+                show: {
+                    operation: ['sendMessage'],
+                },
+            },
+            placeholder: '+1234567890',
+            description: 'Phone number to send the message to',
+        },
+        {
+            displayName: 'Message',
+            name: 'message',
+            type: 'string',
+            default: '',
+            required: true,
+            displayOptions: {
+                show: {
+                    operation: ['sendMessage'],
+                },
+            },
+            placeholder: 'Hello from Wapisimo!',
+            description: 'Message to send',
+        },
+        {
+            displayName: 'Phone',
+            name: 'phone',
+            type: 'string',
+            default: '',
+            required: true,
+            displayOptions: {
+                show: {
+                    operation: ['verifyNumber'],
+                },
+            },
+            placeholder: '+1234567890',
+            description: 'Phone number to verify',
+        },
+    ],
+};

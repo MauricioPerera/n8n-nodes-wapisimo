@@ -1,40 +1,52 @@
 {
   "name": "n8n-nodes-wapisimo",
-  "version": "0.1.0",
-  "description": "Nodo de n8n para integración con Wapisimo",
+  "version": "0.1.8",
+  "description": "Nodo n8n para integración con Wapisimo (https://app.wapisimo.dev), una plataforma de WhatsApp Business API que permite la automatización de mensajería WhatsApp. Este nodo facilita el envío de mensajes, gestión de webhooks y verificación de números de WhatsApp a través de la API de Wapisimo.",
   "keywords": [
-    "n8n-community-node-package",
-    "wapisimo"
+    "n8n",
+    "n8n-node",
+    "n8n-community-node",
+    "wapisimo",
+    "whatsapp",
+    "whatsapp-api",
+    "whatsapp-business",
+    "messaging",
+    "automation",
+    "wapisimo.dev"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/MauricioPerera/n8n-nodes-wapisimo",
   "author": {
-    "name": "Tu Nombre",
-    "email": "tu@email.com"
+    "name": "Mauricio Perera",
+    "email": "mauricio.perera@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tuusuario/n8n-nodes-wapisimo.git"
+    "url": "git+https://github.com/MauricioPerera/n8n-nodes-wapisimo.git"
   },
-  "main": "index.js",
+  "bugs": {
+    "url": "https://github.com/MauricioPerera/n8n-nodes-wapisimo/issues"
+  },
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "nodes": [
-      "dist/nodes/Wapisimo/Wapisimo.node.js"
-    ],
     "credentials": [
-      "dist/credentials/WapisimoApi.credentials.js"
+      "dist/credentials/WapiSimoApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/Wapisimo/Wapisimo.node.js",
+      "dist/nodes/Wapisimo/WapiSimoTrigger.node.js"
     ]
   },
   "devDependencies": {
@@ -42,8 +54,9 @@
     "@types/request": "^2.48.8",
     "@types/request-promise-native": "~1.0.15",
     "@typescript-eslint/parser": "~5.45",
-    "eslint-plugin-n8n-nodes-base": "^1.11.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
     "gulp": "^4.0.2",
+    "jsonc-eslint-parser": "^2.4.0",
     "prettier": "^2.7.1",
     "typescript": "~4.8.4"
   },

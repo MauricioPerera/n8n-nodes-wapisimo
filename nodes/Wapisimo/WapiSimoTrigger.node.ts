@@ -19,9 +19,11 @@ export class WapiSimoTrigger implements INodeType {
             name: 'WapiSimo Trigger',
         },
         inputs: [],
-        outputs: [{
-            type: NodeConnectionType.Main,
-        }],
+        outputs: [
+            {
+                type: NodeConnectionType.Main,
+            },
+        ],
         credentials: [
             {
                 name: 'wapiSimoApi',
