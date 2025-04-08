@@ -41,11 +41,12 @@
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/WapiSimoApi.credentials.js"
-    ],
     "nodes": [
-      "dist/nodes/Wapisimo/Wapisimo.node.js"
+      "dist/nodes/Wapisimo/Wapisimo.node.js",
+      "dist/nodes/Wapisimo/WapiSimoTrigger.node.js"
+    ],
+    "credentials": [
+      "dist/credentials/WapisimoApi.credentials.js"
     ]
   },
   "devDependencies": {

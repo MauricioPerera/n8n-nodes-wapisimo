@@ -5,25 +5,22 @@ import {
     IWebhookFunctions,
     NodeApiError,
     NodeConnectionType,
+    ITriggerResponse,
 } from 'n8n-workflow';
 
 export class WapiSimoTrigger implements INodeType {
     description: INodeTypeDescription = {
-        displayName: 'WapiSimo Trigger',
+        displayName: 'Wapisimo Trigger',
         name: 'wapiSimoTrigger',
         icon: 'file:wapisimo.svg',
         group: ['trigger'],
         version: 1,
-        description: 'Handle incoming WapiSimo webhook events',
+        description: 'Handle Wapisimo webhook events',
         defaults: {
-            name: 'WapiSimo Trigger',
+            name: 'Wapisimo Trigger',
         },
         inputs: [],
-        outputs: [
-            {
-                type: NodeConnectionType.Main,
-            },
-        ],
+        outputs: ['main'],
         credentials: [
             {
                 name: 'wapiSimoApi',
@@ -40,42 +37,18 @@ export class WapiSimoTrigger implements INodeType {
         ],
         properties: [
             {
-                displayName: 'Phone ID',
-                name: 'phoneId',
-                type: 'string',
-                default: '',
-                required: true,
-                description: 'The ID of the phone to receive webhook events for',
-            },
-            {
-                displayName: 'Only Messages From Others',
-                name: 'onlyFromOthers',
-                type: 'boolean',
-                default: true,
-                description: 'Whether to only trigger on messages from others (not from yourself)',
-            },
-            {
-                displayName: 'Options',
-                name: 'options',
-                type: 'collection',
-                placeholder: 'Add Option',
-                default: {},
+                displayName: 'Events',
+                name: 'events',
+                type: 'multiOptions',
                 options: [
                     {
-                        displayName: 'Filter by Sender',
-                        name: 'fromFilter',
-                        type: 'string',
-                        default: '',
-                        description: 'Only trigger on messages from this sender (phone number)',
-                    },
-                    {
-                        displayName: 'Filter by Message Content',
-                        name: 'messageFilter',
-                        type: 'string',
-                        default: '',
-                        description: 'Only trigger on messages containing this text',
+                        name: 'Message Received',
+                        value: 'messageReceived',
+                        description: 'Trigger when a message is received',
                     },
                 ],
+                default: ['messageReceived'],
+                required: true,
             },
         ],
     };
@@ -175,42 +148,30 @@ export class WapiSimoTrigger implements INodeType {
         },
     };
 
-    async webhook(this: IWebhookFunctions) {
+    async webhook(this: IWebhookFunctions): Promise<ITriggerResponse> {
+        const webhookData = this.getWebhookName();
         const bodyData = this.getBodyData();
-        const onlyFromOthers = this.getNodeParameter('onlyFromOthers', false) as boolean;
-        const options = this.getNodeParameter('options', {}) as {
-            fromFilter?: string;
-            messageFilter?: string;
-        };
 
-        if (onlyFromOthers && (bodyData as { fromMe: boolean }).fromMe === true) {
+        // Webhook payload según la documentación:
+        // {
+        //   "from": "521552312221@s.whatsapp.net",
+        //   "message": "Hola",
+        //   "timestamp": 1742968374,
+        //   "fromMe": false
+        // }
+
+        if (webhookData.webhookName === 'default') {
             return {
-                noWebhookResponse: true,
+                workflowData: [
+                    this.helpers.returnJsonArray([bodyData]),
+                ],
             };
         }
 
-        if (options.fromFilter && (bodyData as { from: string }).from) {
-            const fromFilter = options.fromFilter;
-            const from = (bodyData as { from: string }).from;
-            if (!from.includes(fromFilter)) {
-                return {
-                    noWebhookResponse: true,
-                };
-            }
-        }
-
-        if (options.messageFilter && (bodyData as { message: string }).message) {
-            const messageFilter = options.messageFilter;
-            const message = (bodyData as { message: string }).message;
-            if (!message.includes(messageFilter)) {
-                return {
-                    noWebhookResponse: true,
-                };
-            }
-        }
-
         return {
-            workflowData: [this.helpers.returnJsonArray([bodyData])],
+            workflowData: [
+                this.helpers.returnJsonArray([{ error: 'Webhook not found' }]),
+            ],
         };
     }
 }
