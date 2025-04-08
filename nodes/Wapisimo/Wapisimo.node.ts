@@ -4,6 +4,7 @@ import {
 	INodeType,
 	INodeTypeDescription,
 	NodeOperationError,
+	NodeConnectionType,
 } from 'n8n-workflow';
 import { wapiSimoOperations, wapiSimoFields } from './WapiSimoDescription';
 
@@ -22,13 +23,13 @@ export class Wapisimo implements INodeType {
 		inputs: [
 			{
 				name: 'main',
-				type: 'main',
+				type: NodeConnectionType.Main,
 			},
 		],
 		outputs: [
 			{
 				name: 'main',
-				type: 'main',
+				type: NodeConnectionType.Main,
 			},
 		],
 		credentials: [
