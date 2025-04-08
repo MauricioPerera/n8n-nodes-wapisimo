@@ -37,7 +37,7 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist"
+    "dist/**/*"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
@@ -45,8 +45,7 @@
       "dist/credentials/WapiSimoApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Wapisimo/Wapisimo.node.js",
-      "dist/nodes/Wapisimo/WapiSimoTrigger.node.js"
+      "dist/nodes/Wapisimo/Wapisimo.node.js"
     ]
   },
   "devDependencies": {
