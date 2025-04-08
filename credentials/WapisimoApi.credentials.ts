@@ -4,10 +4,17 @@ import {
 } from 'n8n-workflow';
 
 export class WapisimoApi implements ICredentialType {
-	name = 'wapisimoApi';
-	displayName = 'Wapisimo API';
+	name = 'wapiSimoApi';
+	displayName = 'WapiSimo API';
 	documentationUrl = 'https://api.wapisimo.dev/docs';
 	properties: INodeProperties[] = [
+		{
+			displayName: 'Base URL',
+			name: 'baseUrl',
+			type: 'string',
+			default: 'https://api.wapisimo.dev/v1',
+			required: true,
+		},
 		{
 			displayName: 'API Key',
 			name: 'apiKey',
@@ -17,7 +24,14 @@ export class WapisimoApi implements ICredentialType {
 			},
 			default: '',
 			required: true,
-			description: 'La API key de Wapisimo',
+		},
+		{
+			displayName: 'Phone/Group ID',
+			name: 'phoneOrGroupId',
+			type: 'string',
+			default: '',
+			required: true,
+			description: 'The ID of your WhatsApp phone or group',
 		},
 	];
 }
