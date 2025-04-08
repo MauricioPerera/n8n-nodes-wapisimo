@@ -1,0 +1,15 @@
+{
+    "node": "n8n-nodes-base.wapisimo",
+    "nodeVersion": "1.0",
+    "codexVersion": "1.0",
+    "categories": [
+        "Communication"
+    ],
+    "resources": {
+        "primaryDocumentation": [
+            {
+                "url": "https://api.wapisimo.dev/docs"
+            }
+        ]
+    }
+}
