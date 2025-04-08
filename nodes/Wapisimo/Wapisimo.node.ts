@@ -6,7 +6,7 @@ import {
 	NodeOperationError,
 	NodeConnectionType,
 } from 'n8n-workflow';
-import { wapiSimoOperations, wapiSimoFields } from './WapiSimoDescription';
+import { wapiSimoOperations } from './WapiSimoDescription';
 
 export class Wapisimo implements INodeType {
 	description: INodeTypeDescription = {
@@ -36,10 +36,7 @@ export class Wapisimo implements INodeType {
 				required: true,
 			},
 		],
-		properties: [
-			...wapiSimoOperations,
-			...wapiSimoFields,
-		],
+		properties: wapiSimoOperations,
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {

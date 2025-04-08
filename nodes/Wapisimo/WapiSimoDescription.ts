@@ -1,48 +1,48 @@
 import { INodeProperties, INodeTypeDescription, NodeConnectionType } from 'n8n-workflow';
 
-export const wapiSimoOperations: INodeProperties[] = [
-    {
-        displayName: 'Operation',
-        name: 'operation',
-        type: 'options',
-        noDataExpression: true,
-        default: 'sendMessage',
-        options: [
-            {
-                name: 'Send Message',
-                value: 'sendMessage',
-                description: 'Send a WhatsApp message to a specific number',
-            },
-            {
-                name: 'Verify Number',
-                value: 'verifyNumber',
-                description: 'Check if a phone number is registered on WhatsApp',
-            },
-            {
-                name: 'Get QR Code',
-                value: 'getQRCode',
-                description: 'Retrieve the QR code for WhatsApp Web authentication',
-            },
-            {
-                name: 'List Webhooks',
-                value: 'listWebhooks',
-                description: 'Get all webhooks configured for a phone',
-            },
-            {
-                name: 'Add Webhook',
-                value: 'addWebhook',
-                description: 'Configure a new webhook for receiving message notifications',
-            },
-            {
-                name: 'Delete Webhook',
-                value: 'deleteWebhook',
-                description: 'Remove a configured webhook',
-            },
-        ],
-    },
-];
+// Un solo objeto para las operaciones
+const operationField: INodeProperties = {
+    displayName: 'Operation',
+    name: 'operation',
+    type: 'options',
+    noDataExpression: true,
+    default: 'sendMessage',
+    options: [
+        {
+            name: 'Send Message',
+            value: 'sendMessage',
+            description: 'Send a WhatsApp message',
+        },
+        {
+            name: 'Verify Number',
+            value: 'verifyNumber',
+            description: 'Check if a phone number is registered on WhatsApp',
+        },
+        {
+            name: 'Get QR Code',
+            value: 'getQRCode',
+            description: 'Retrieve the QR code for WhatsApp Web authentication',
+        },
+        {
+            name: 'List Webhooks',
+            value: 'listWebhooks',
+            description: 'Get all webhooks configured for a phone',
+        },
+        {
+            name: 'Add Webhook',
+            value: 'addWebhook',
+            description: 'Configure a new webhook for receiving message notifications',
+        },
+        {
+            name: 'Delete Webhook',
+            value: 'deleteWebhook',
+            description: 'Remove a configured webhook',
+        },
+    ],
+};
 
-export const wapiSimoFields: INodeProperties[] = [
+// Los campos para cada operación
+const fields: INodeProperties[] = [
     // Send Message
     {
         displayName: 'Phone or Group ID',
@@ -55,7 +55,6 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['sendMessage'],
             },
         },
-        description: 'The phone ID or group ID to send the message from',
     },
     {
         displayName: 'To',
@@ -68,7 +67,6 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['sendMessage'],
             },
         },
-        description: 'The phone number to send the message to',
     },
     {
         displayName: 'Message',
@@ -81,7 +79,6 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['sendMessage'],
             },
         },
-        description: 'The message to send',
     },
 
     // Verify Number
@@ -96,7 +93,6 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['verifyNumber'],
             },
         },
-        description: 'The phone number to verify',
     },
 
     // QR Code and Webhooks
@@ -111,7 +107,6 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['getQRCode', 'listWebhooks', 'addWebhook', 'deleteWebhook'],
             },
         },
-        description: 'The phone ID',
     },
 
     // Add Webhook
@@ -126,7 +121,6 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['addWebhook'],
             },
         },
-        description: 'The URL to send webhook events to',
     },
 
     // Delete Webhook
@@ -141,9 +135,11 @@ export const wapiSimoFields: INodeProperties[] = [
                 operation: ['deleteWebhook'],
             },
         },
-        description: 'The ID of the webhook to delete',
     },
 ];
+
+// Exportamos todo junto
+export const wapiSimoOperations = [operationField, ...fields];
 
 export const description: INodeTypeDescription = {
     displayName: 'Wapisimo',
