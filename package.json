@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-wapisimo",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Nodo n8n para integración con Wapisimo (https://app.wapisimo.dev), una plataforma de WhatsApp Business API que permite la automatización de mensajería WhatsApp. Este nodo facilita el envío de mensajes, gestión de webhooks y verificación de números de WhatsApp a través de la API de Wapisimo.",
   "keywords": [
     "n8n",
