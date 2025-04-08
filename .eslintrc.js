@@ -14,13 +14,19 @@ module.exports = {
 
 	parserOptions: {
 		project: ['./tsconfig.json'],
-		sourceType: 'module',
-		extraFileExtensions: ['.json'],
 	},
 
-	ignorePatterns: ['.eslintrc.js', '**/*.js', '**/node_modules/**', '**/dist/**'],
+	extends: [
+		'plugin:n8n-nodes-base/recommended',
+	],
+
+	ignorePatterns: ['dist/**/*', '*.js'],
 
 	overrides: [
+		{
+			files: ['package.json'],
+			parser: 'jsonc-eslint-parser',
+		},
 		{
 			files: ['package.json'],
 			plugins: ['eslint-plugin-n8n-nodes-base'],
