@@ -3,9 +3,9 @@ import {
     INodeType,
     INodeTypeDescription,
     IWebhookFunctions,
+    IWebhookResponseData,
     NodeApiError,
     NodeConnectionType,
-    ITriggerResponse,
 } from 'n8n-workflow';
 
 export class WapiSimoTrigger implements INodeType {
@@ -20,7 +20,11 @@ export class WapiSimoTrigger implements INodeType {
             name: 'Wapisimo Trigger',
         },
         inputs: [],
-        outputs: ['main'],
+        outputs: [
+            {
+                type: NodeConnectionType.Main,
+            }
+        ],
         credentials: [
             {
                 name: 'wapiSimoApi',
@@ -148,30 +152,20 @@ export class WapiSimoTrigger implements INodeType {
         },
     };
 
-    async webhook(this: IWebhookFunctions): Promise<ITriggerResponse> {
-        const webhookData = this.getWebhookName();
+    async webhook(this: IWebhookFunctions): Promise<IWebhookResponseData> {
+        const webhookName = this.getWebhookName();
         const bodyData = this.getBodyData();
 
-        // Webhook payload según la documentación:
-        // {
-        //   "from": "521552312221@s.whatsapp.net",
-        //   "message": "Hola",
-        //   "timestamp": 1742968374,
-        //   "fromMe": false
-        // }
-
-        if (webhookData.webhookName === 'default') {
+        if (webhookName === 'default') {
             return {
-                workflowData: [
-                    this.helpers.returnJsonArray([bodyData]),
-                ],
+                webhookResponse: 'OK',
+                workflowData: [this.helpers.returnJsonArray([bodyData])],
             };
         }
 
         return {
-            workflowData: [
-                this.helpers.returnJsonArray([{ error: 'Webhook not found' }]),
-            ],
+            webhookResponse: 'Not Found',
+            workflowData: [this.helpers.returnJsonArray([{ error: 'Webhook not found' }])],
         };
     }
 }
