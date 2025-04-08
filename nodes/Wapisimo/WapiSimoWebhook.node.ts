@@ -100,6 +100,10 @@ export class WapiSimoWebhook implements INodeType {
         ],
     };
 
+    constructor() {
+        // No necesita hacer nada, pero debe existir
+    }
+
     async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
         const items = this.getInputData();
         const returnData: INodeExecutionData[] = [];

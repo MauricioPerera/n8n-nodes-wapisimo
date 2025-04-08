@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-wapisimo",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "n8n node for Wapisimo API",
   "keywords": [
     "n8n-community-node-package"
@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
-    "format": "prettier nodes credentials --write",
+    "format": "prettier nodes credentials package.json --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
     "prepublishOnly": "npm run build"
@@ -34,14 +34,15 @@
     ],
     "nodes": [
       "dist/nodes/Wapisimo/Wapisimo.node.js",
-      "dist/nodes/Wapisimo/WapiSimoTrigger.node.js"
+      "dist/nodes/Wapisimo/WapiSimoTrigger.node.js",
+      "dist/nodes/Wapisimo/WapiSimoWebhook.node.js"
     ]
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
-    "gulp": "^5.0.0",
-    "n8n-core": "^1.14.1",
-    "n8n-workflow": "^1.82.0",
-    "typescript": "^5.8.3"
+    "@types/node": "^16.11.7",
+    "gulp": "^4.0.2",
+    "n8n-core": "^0.125.0",
+    "n8n-workflow": "^0.107.0",
+    "typescript": "~4.8.4"
   }
 }
