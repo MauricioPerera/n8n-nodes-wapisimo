@@ -54,13 +54,13 @@ export class Wapisimo implements INodeType {
 				};
 
 				if (operation === 'sendMessage') {
-					const phoneOrGroupId = this.getNodeParameter('phoneOrGroupId', i) as string;
+					const phoneId = this.getNodeParameter('phoneId', i) as string;
 					const to = this.getNodeParameter('to', i) as string;
 					const message = this.getNodeParameter('message', i) as string;
 
 					response = await this.helpers.request({
 						method: 'POST',
-						url: `https://api.wapisimo.dev/v1/${phoneOrGroupId}/send`,
+						url: `https://api.wapisimo.dev/v1/${phoneId}/send`,
 						headers,
 						body: { to, message },
 						json: true,
