@@ -1,5 +1,5 @@
-import { IExecuteFunctions } from 'n8n-core';
 import {
+	IExecuteFunctions,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
@@ -19,8 +19,18 @@ export class Wapisimo implements INodeType {
 		defaults: {
 			name: 'Wapisimo',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [
+			{
+				name: 'main',
+				type: 'main',
+			},
+		],
+		outputs: [
+			{
+				name: 'main',
+				type: 'main',
+			},
+		],
 		credentials: [
 			{
 				name: 'wapiSimoApi',
