@@ -27,10 +27,7 @@ export class Wapisimo implements INodeType {
 				required: true,
 			},
 		],
-		properties: [
-			wapiSimoOperations,
-			...wapiSimoFields,
-		],
+		properties: wapiSimoOperations,
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
