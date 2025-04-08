@@ -4,7 +4,7 @@ export class WapiSimoApi implements ICredentialType {
     name = 'wapiSimoApi';
     displayName = 'Wapisimo API';
     documentationUrl = 'https://wapisimo.com/docs';
-
+    
     properties: INodeProperties[] = [
         {
             displayName: 'API Key',
