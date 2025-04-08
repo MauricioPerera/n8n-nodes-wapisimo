@@ -3,8 +3,8 @@ import { ICredentialType, INodeProperties } from 'n8n-workflow';
 export class WapiSimoApi implements ICredentialType {
     name = 'wapiSimoApi';
     displayName = 'Wapisimo API';
-    documentationUrl = 'https://wapisimo.com/docs';
-    
+    documentationUrl = 'https://api.wapisimo.dev/v1';
+
     properties: INodeProperties[] = [
         {
             displayName: 'API Key',
@@ -14,6 +14,7 @@ export class WapiSimoApi implements ICredentialType {
                 password: true,
             },
             default: '',
+            required: true,
         },
     ];
 }

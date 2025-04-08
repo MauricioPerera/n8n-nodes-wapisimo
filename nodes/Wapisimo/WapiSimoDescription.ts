@@ -1,105 +1,66 @@
 import { INodeProperties, INodeTypeDescription, NodeConnectionType } from 'n8n-workflow';
 
-export const wapiSimoOperations: INodeProperties[] = [
-    {
-        displayName: 'Operation',
-        name: 'operation',
-        type: 'options',
-        noDataExpression: true,
-        displayOptions: {
-            show: {
-                resource: ['message'],
-            },
+export const wapiSimoOperations: INodeProperties = {
+    displayName: 'Operation',
+    name: 'operation',
+    type: 'options',
+    noDataExpression: true,
+    default: 'sendMessage',
+    options: [
+        {
+            name: 'Send Message',
+            value: 'sendMessage',
+            description: 'Send a WhatsApp message to a specific number',
+            action: 'Send a WhatsApp message',
         },
-        options: [
-            {
-                name: 'Send Message',
-                value: 'sendMessage',
-                action: 'Send message',
-            },
-            {
-                name: 'Verify Number',
-                value: 'verifyNumber',
-                action: 'Verify number',
-            },
-            {
-                name: 'Get QR Code',
-                value: 'getQRCode',
-                action: 'Get QR code',
-            },
-        ],
-        default: 'sendMessage',
-    },
-    {
-        displayName: 'Operation',
-        name: 'operation',
-        type: 'options',
-        noDataExpression: true,
-        displayOptions: {
-            show: {
-                resource: ['phone'],
-            },
+        {
+            name: 'Verify Number',
+            value: 'verifyNumber',
+            description: 'Check if a phone number is registered on WhatsApp',
+            action: 'Verify a phone number',
         },
-        options: [
-            {
-                name: 'Verify Number',
-                value: 'verifyNumber',
-                description: 'Check if a phone number is registered on WhatsApp',
-                routing: {
-                    request: {
-                        method: 'GET',
-                        url: '/verify',
-                    },
-                },
-                action: 'Verify number',
-            },
-            {
-                name: 'Get QR Code',
-                value: 'getQRCode',
-                description: 'Retrieve the QR code for WhatsApp Web authentication',
-                routing: {
-                    request: {
-                        method: 'GET',
-                        url: '={{ "/" + $credentials.phoneOrGroupId + "/qr"}}',
-                    },
-                },
-                action: 'Get QR code',
-            },
-        ],
-        default: 'verifyNumber',
-    },
-    {
-        displayName: 'Operation',
-        name: 'operation',
-        type: 'options',
-        noDataExpression: true,
-        displayOptions: {
-            show: {
-                resource: ['webhook'],
-            },
+        {
+            name: 'Get QR Code',
+            value: 'getQRCode',
+            description: 'Retrieve the QR code for WhatsApp Web authentication',
+            action: 'Get QR code',
         },
-        options: [
-            {
-                name: 'List Webhooks',
-                value: 'listWebhooks',
-                action: 'List webhooks',
-            },
-            {
-                name: 'Add Webhook',
-                value: 'addWebhook',
-                action: 'Add webhook',
-            },
-            {
-                name: 'Delete Webhook',
-                value: 'deleteWebhook',
-                action: 'Delete webhook',
-            },
-        ],
-        default: 'listWebhooks',
-    },
-];
+        {
+            name: 'List Webhooks',
+            value: 'listWebhooks',
+            description: 'Get all webhooks configured for a phone',
+            action: 'List webhooks',
+        },
+        {
+            name: 'Add Webhook',
+            value: 'addWebhook',
+            description: 'Configure a new webhook for receiving message notifications',
+            action: 'Add webhook',
+        },
+        {
+            name: 'Delete Webhook',
+            value: 'deleteWebhook',
+            description: 'Remove a configured webhook',
+            action: 'Delete webhook',
+        },
+    ],
+};
 
 export const wapiSimoFields: INodeProperties[] = [
+    // Fields for Send Message
+    {
+        displayName: 'Phone or Group ID',
+        name: 'phoneOrGroupId',
+        type: 'string',
+        required: true,
+        default: '',
+        displayOptions: {
+            show: {
+                operation: ['sendMessage'],
+            },
+        },
+        description: 'The phone ID or group ID to send the message from',
+    },
     {
         displayName: 'To',
         name: 'to',
@@ -108,17 +69,10 @@ export const wapiSimoFields: INodeProperties[] = [
         default: '',
         displayOptions: {
             show: {
-                resource: ['message'],
                 operation: ['sendMessage'],
             },
         },
         description: 'The phone number to send the message to',
-        routing: {
-            send: {
-                type: 'body',
-                property: 'to',
-            },
-        },
     },
     {
         displayName: 'Message',
@@ -128,18 +82,13 @@ export const wapiSimoFields: INodeProperties[] = [
         default: '',
         displayOptions: {
             show: {
-                resource: ['message'],
                 operation: ['sendMessage'],
             },
         },
         description: 'The message to send',
-        routing: {
-            send: {
-                type: 'body',
-                property: 'message',
-            },
-        },
     },
+
+    // Fields for Verify Number
     {
         displayName: 'Phone Number',
         name: 'phone',
@@ -148,18 +97,28 @@ export const wapiSimoFields: INodeProperties[] = [
         default: '',
         displayOptions: {
             show: {
-                resource: ['phone'],
                 operation: ['verifyNumber'],
             },
         },
         description: 'The phone number to verify',
-        routing: {
-            send: {
-                type: 'query',
-                property: 'phone',
+    },
+
+    // Fields for QR Code
+    {
+        displayName: 'Phone ID',
+        name: 'phoneId',
+        type: 'string',
+        required: true,
+        default: '',
+        displayOptions: {
+            show: {
+                operation: ['getQRCode', 'listWebhooks', 'addWebhook'],
             },
         },
+        description: 'The phone ID to get the QR code for',
     },
+
+    // Fields for Webhook operations
     {
         displayName: 'Webhook URL',
         name: 'url',
@@ -168,17 +127,10 @@ export const wapiSimoFields: INodeProperties[] = [
         default: '',
         displayOptions: {
             show: {
-                resource: ['webhook'],
                 operation: ['addWebhook'],
             },
         },
-        description: 'The URL of the webhook',
-        routing: {
-            send: {
-                type: 'body',
-                property: 'url',
-            },
-        },
+        description: 'The URL to send webhook events to',
     },
     {
         displayName: 'Webhook ID',
@@ -188,7 +140,6 @@ export const wapiSimoFields: INodeProperties[] = [
         default: '',
         displayOptions: {
             show: {
-                resource: ['webhook'],
                 operation: ['deleteWebhook'],
             },
         },
